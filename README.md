@@ -27,7 +27,7 @@ cp days/day01/day01.go days/day02/day02.go
 ```diff
   var day_map = map[string](func() days.Day) {
     "01": func() days.Day { d := day01.Day01{}; return &d },
-+   "02": func() days.Day { d := day02.Day01{}; return &d },
++   "02": func() days.Day { d := day02.Day02{}; return &d },
   }
 ```
 
