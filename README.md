@@ -47,11 +47,11 @@ go run main.go 1
 
 ## Progress
 
-⭐ Total stars: 4/24
+⭐ Total stars: 6/24
 
 - [x] Day 1
 - [x] Day 2
-- [ ] Day 3
+- [x] Day 3
 - [ ] Day 4
 - [ ] Day 5
 - [ ] Day 6

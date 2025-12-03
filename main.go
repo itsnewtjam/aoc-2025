@@ -10,12 +10,14 @@ import (
 	"aoc2025/days"
 	"aoc2025/days/day01"
 	"aoc2025/days/day02"
+	"aoc2025/days/day03"
 )
 
 func main() {
 	var day_map = map[string](func() days.Day) {
 		"01": func() days.Day { d := day01.Day01{}; return &d },
 		"02": func() days.Day { d := day02.Day02{}; return &d },
+		"03": func() days.Day { d := day03.Day03{}; return &d },
 	}
 
 	var dayKey = ""
