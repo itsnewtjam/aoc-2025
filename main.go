@@ -15,6 +15,7 @@ import (
 	"aoc2025/days/day05"
 	"aoc2025/days/day06"
 	"aoc2025/days/day07"
+	"aoc2025/days/day08"
 )
 
 func main() {
@@ -26,6 +27,7 @@ func main() {
 		"05": func() days.Day { d := day05.Day05{}; return &d },
 		"06": func() days.Day { d := day06.Day06{}; return &d },
 		"07": func() days.Day { d := day07.Day07{}; return &d },
+		"08": func() days.Day { d := day08.Day08{}; return &d },
 	}
 
 	var dayKey = ""
