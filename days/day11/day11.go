@@ -19,6 +19,7 @@ func (d *Day11) Part1() {
 	// var input = util.ReadInput("inputs/day11-example.txt")
 	var input = util.ReadInput("inputs/day11.txt")
 
+	// first populate a map of devices
 	devices := make(map[string]*device, len(input))
 	devices["out"] = &device{id: "out"}
 	for _, line := range input {
@@ -26,6 +27,7 @@ func (d *Day11) Part1() {
 		devices[id] = &device{id: id}
 	}
 
+	// now that they all exist, we run back through and add the connections
 	for _, line := range input {
 		parts := strings.Split(line, ":")
 		conns := strings.Fields(parts[1])
@@ -36,9 +38,9 @@ func (d *Day11) Part1() {
 		}
 	}
 
+	// now just bfs
 	paths := 0
 	queue := [][]string{{"you"}}
-
 	for len(queue) > 0 {
 		path := queue[0]
 		queue = queue[1:]
@@ -78,6 +80,26 @@ func (d *Day11) Part2() {
 			dev.connections = append(dev.connections, connDev)
 		}
 	}
+
+	// here we just dfs for each piece of the path, and then
+	// combine them for the final total
+	svr := devices["svr"]
+	out := devices["out"]
+	dac := devices["dac"]
+	fft := devices["fft"]
+
+	pathsSRVtoDAC := dfs(svr, dac, make(map[string]int))
+	pathsSRVtoFFT := dfs(svr, fft, make(map[string]int))
+	pathsDACtoFFT := dfs(dac, fft, make(map[string]int))
+	pathsFFTtoDAC := dfs(fft, dac, make(map[string]int))
+	pathsDACtoOUT := dfs(dac, out, make(map[string]int))
+	pathsFFTtoOUT := dfs(fft, out, make(map[string]int))
+
+	total := 0
+	total += pathsSRVtoDAC * pathsDACtoFFT * pathsFFTtoOUT
+	total += pathsSRVtoFFT * pathsFFTtoDAC * pathsDACtoOUT
+
+	d.s2 = total
 }
 
 func (d *Day11) Solution1() string {
@@ -93,17 +115,19 @@ type device struct {
 	connections []*device
 }
 
-func dfsCount (curr, target *device, visited map[string]bool, count *int) {
+func dfs(curr, target *device, memo map[string]int) int {
 	if curr.id == target.id {
-		*count++
-		return
+		return 1
 	}
 
-	visited[curr.id] = true
-	for _, conn := range curr.connections {
-		if !visited[conn.id] {
-			dfsCount(conn, target, visited, count)
-		}
+	if cached, exists := memo[curr.id]; exists {
+		return cached
 	}
-	visited[curr.id] = false
+
+	count := 0
+	for _, conn := range curr.connections {
+		count += dfs(conn, target, memo)
+	}
+	memo[curr.id] = count
+	return count
 }
